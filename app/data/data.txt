@@ -1,0 +1,1 @@
+;RPM:1000;COOLANT_TEMP:100;engine_load:75;vehicle_speed:51
