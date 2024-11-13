@@ -3,11 +3,13 @@ import {Box, Paper, Stack} from "@mantine/core";
 const GaugeComponent = dynamic(() => import('react-gauge-component'), { ssr: false });
 
 import GaugeProps = Gauges.GaugeProps;
+import classes from "./gauge.module.css";
 
-export default function Gauge(props:GaugeProps, value:number){
+export default function Gauge(props:GaugeProps, onClickCallback,value:number){
+    const key:string = props.label;
     return (
         <Paper shadow="xs">
-            <Box bg='#696969'>
+            <Box className={classes.box} onClick={onClickCallback}>
                 <Stack
                     align="center"
                 >
@@ -17,6 +19,13 @@ export default function Gauge(props:GaugeProps, value:number){
                         maxValue={props.maxValue}
                         type={props.type}
                         labels={{
+                            valueLabel: {
+                                style: {fontSize: 40},
+                                formatTextValue: (value:string):string => {
+                                    const newValue:number = parseInt(value) * props.formatMultiplier;
+                                    return `${newValue} ${props.unit}`
+                                },
+                            },
                             tickLabels: {
                                 type: "inner",
                                 ticks: props.ticks

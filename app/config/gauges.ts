@@ -1,5 +1,5 @@
 /*
-        RPM
+TODO
         VEHICLE SPEED
         COOLANT TEMP
         CALCULATE ENGINE LOAD
@@ -12,38 +12,9 @@
 import GaugeProps = Gauges.GaugeProps;
 import { Colors } from "~/config/colors";
 
-declare module Gauges {
-  export class GaugeProps {
-    /** Min value of the gauge */
-    minValue: number;
-    /** Max value of the gauge */
-    maxValue: number;
-    /** Label which sits below each gauge */
-    label?: string;
-    /** Unit for the gauge's value */
-    unit: string;
-    /** Type of arc. Note that grafana cannot have a pointer (bug in the component) */
-    type?: "semicircle" | "radial" | "grafana";
-    /** Colors spread throughout the arc. Must be '#HEX' */
-    colorArray?: string[];
-    /** Array for each tick label on the arc */
-    ticks?: Tick[];
-    /** Array of intervals for breakpoints in the arc "SubArc's" */
-    subArcs?: SubArc[];
-  }
-
-  export interface Tick {
-    /**Test*/
-    value: number;
-  }
-
-  export interface SubArc {
-    /**Another Test*/
-    limit?: number;
-    color?: string;
-  }
+function onGaugeClickCallback(gaugeName:string) {
+  console.log(`${gaugeName} clicked.`)
 }
-
 
 export const RPM:GaugeProps =  {
   minValue: 0,
@@ -51,6 +22,7 @@ export const RPM:GaugeProps =  {
   label: "RPM (x1000)",
   unit: "RPM",
   type: "radial",
+  formatMultiplier: 1000,
   // colorArray: ['#71a624','#5BE12C','#EA4228'],
   ticks: [
     { value: 1 },
@@ -65,4 +37,34 @@ export const RPM:GaugeProps =  {
     { value: 10 },
   ],
   subArcs: [{limit: 2, color:Colors.Color1} , {limit: 4, color:Colors.Color2}, {limit: 5.4, color: Colors.Color3}, {limit: 8, color: Colors.Color4}, {color: Colors.Color5}],
+  gaugeClickCallback: onGaugeClickCallback
+}
+
+export const VEHICLE_SPEED:GaugeProps = {
+  minValue: 0,
+  maxValue: 150,
+  label: "MPH",
+  unit: "MPH",
+  type: "grafana",
+  formatMultiplier: 1,
+  colorArray: [Colors.Color1,Colors.Color3,Colors.Color5],
+  ticks: [
+    { value: 10},
+    { value: 20},
+    { value: 30},
+    { value: 40},
+    { value: 50},
+    { value: 60},
+    { value: 70},
+    { value: 80},
+    { value: 90},
+    { value: 100},
+    { value: 110},
+    { value: 120},
+    { value: 130},
+    { value: 140},
+    { value: 150},
+  ],
+  gaugeClickCallback: onGaugeClickCallback
+  // subArcs: [{limit}]
 }

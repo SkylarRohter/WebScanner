@@ -1,5 +1,6 @@
-# Welcome to Remix + Vite!
+# OBD-II Reader 
 
+🍴 Forked from the [Mantine Remix Template](https://github.com/mantinedev/remix-template)\
 📖 See the [Remix docs](https://remix.run/docs) and the [Remix Vite docs](https://remix.run/docs/en/main/future/vite) for details on supported features.
 
 ## Development
@@ -9,10 +10,15 @@ Run the Vite dev server:
 ```shellscript
 npm run dev
 ```
+Ensure `data.txt` is accessible 
+## Requirements
+* Raspberry Pi 3+ built on any [Debian Linux](https://www.debian.org/) distribution
+* Bluetooth ELM327 OBD-ii adapter
+* 
 
 ## Deployment
 
-First, build your app for production:
+First, build for production:
 
 ```sh
 npm run build
