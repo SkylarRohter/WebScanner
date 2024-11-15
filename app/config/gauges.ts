@@ -17,6 +17,7 @@ function onGaugeClickCallback(gaugeName:string) {
 }
 
 export const RPM:GaugeProps =  {
+  value: 10,
   minValue: 0,
   maxValue: 10,
   label: "RPM (x1000)",
@@ -41,6 +42,7 @@ export const RPM:GaugeProps =  {
 }
 
 export const VEHICLE_SPEED:GaugeProps = {
+  value: 130,
   minValue: 0,
   maxValue: 150,
   label: "MPH",
@@ -67,4 +69,17 @@ export const VEHICLE_SPEED:GaugeProps = {
   ],
   gaugeClickCallback: onGaugeClickCallback
   // subArcs: [{limit}]
+}
+
+const gaugePropsArray:GaugeProps[] = [RPM, VEHICLE_SPEED];
+
+export default function getGauge(gaugeName:string):GaugeProps | null {
+  console.log("GaugeNameFromTs:"+gaugeName)
+  gaugePropsArray.forEach((gauge:GaugeProps) => {
+    console.log("Gauge from ts :" + gauge.unit)
+    if(gauge.unit === gaugeName){
+      return gauge;
+    }
+  })
+  return null;
 }

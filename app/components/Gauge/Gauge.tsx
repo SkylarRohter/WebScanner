@@ -5,18 +5,19 @@ const GaugeComponent = dynamic(() => import('react-gauge-component'), { ssr: fal
 import GaugeProps = Gauges.GaugeProps;
 import classes from "./gauge.module.css";
 
-export default function Gauge(props:GaugeProps,onClick:()=>void, value:number){
+export default function Gauge(props:GaugeProps,onClick:(gaugeName:string)=>void){
     const key:string = props.label;
     return (
         <Paper shadow="xs">
             <Box className={classes.box} onClick={() => {
-                onClick()
+                console.log("Gauge:"+props.unit)
+                onClick(props.unit);
             }}>
                 <Stack
                     align="center"
                 >
                     <GaugeComponent
-                        value={value}
+                        value={props.value}
                         minValue={props.minValue}
                         maxValue={props.maxValue}
                         type={props.type}

@@ -1,5 +1,6 @@
 declare module Gauges {
     export class GaugeProps {
+        value: number
         /** Min value of the gauge */
         minValue: number;
         /** Max value of the gauge */
