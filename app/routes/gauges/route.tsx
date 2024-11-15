@@ -8,12 +8,14 @@ import {RPM, VEHICLE_SPEED} from "~/config/gauges";
 
 export default function hi() {
     const [desktopOpened, {toggle: toggleDesktop}] = useDisclosure();
-    function onGaugeClick(gaugeName:string):void{ console.log(`${gaugeName}`)}
+    function click() {
+        console.log("click")
+    }
     const gauges = [
-        Gauge(RPM, 10),
-        Gauge(VEHICLE_SPEED, onGaugeClick, 130),
-        Gauge("Test"),
-        Gauge("awddawdawd")
+        Gauge(RPM, click, 10),
+        Gauge(VEHICLE_SPEED, click , 130),
+        // Gauge("Test"),
+        // Gauge("awddawdawd")
     ];
     return (
         <AppShell

@@ -5,11 +5,13 @@ const GaugeComponent = dynamic(() => import('react-gauge-component'), { ssr: fal
 import GaugeProps = Gauges.GaugeProps;
 import classes from "./gauge.module.css";
 
-export default function Gauge(props:GaugeProps, onClickCallback,value:number){
+export default function Gauge(props:GaugeProps,onClick:()=>void, value:number){
     const key:string = props.label;
     return (
         <Paper shadow="xs">
-            <Box className={classes.box} onClick={onClickCallback}>
+            <Box className={classes.box} onClick={() => {
+                onClick()
+            }}>
                 <Stack
                     align="center"
                 >
@@ -21,8 +23,8 @@ export default function Gauge(props:GaugeProps, onClickCallback,value:number){
                         labels={{
                             valueLabel: {
                                 style: {fontSize: 40},
-                                formatTextValue: (value:string):string => {
-                                    const newValue:number = parseInt(value) * props.formatMultiplier;
+                                formatTextValue: (value: string): string => {
+                                    const newValue: number = parseInt(value) * props.formatMultiplier;
                                     return `${newValue} ${props.unit}`
                                 },
                             },
