@@ -18,6 +18,7 @@
     "@remix-run/serve": "^2.9.2",
     "isbot": "^5.1.9",
     "next": "^15.0.3",
+    "package.json": "^2.0.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-gauge-component": "^1.2.6"
