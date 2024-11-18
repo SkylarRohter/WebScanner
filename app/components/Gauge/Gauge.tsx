@@ -5,8 +5,7 @@ const GaugeComponent = dynamic(() => import('react-gauge-component'), { ssr: fal
 import GaugeProps = Gauges.GaugeProps;
 import classes from "./gauge.module.css";
 
-export default function Gauge(props:GaugeProps,onClick:(gaugeName:string)=>void){
-    const key:string = props.label;
+export default function Gauge(props:GaugeProps,onClick:(gaugeUnit:string)=>void){
     return (
         <Paper shadow="xs">
             <Box className={classes.box} onClick={() => {

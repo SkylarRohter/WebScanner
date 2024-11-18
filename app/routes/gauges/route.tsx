@@ -1,70 +1,79 @@
-import {AppShell, Button, Grid, Menu, Textarea} from '@mantine/core';
+import {AppShell, Button, Flex, Grid, Menu, Stack, Textarea} from '@mantine/core';
 import {LoaderFunction, LoaderFunctionArgs} from "@remix-run/node";
-import {useDisclosure} from "@mantine/hooks";
+import {useDisclosure, useClickOutside} from "@mantine/hooks";
 import Gauge from "~/components/Gauge/Gauge";
 
-import getGauge, {RPM, VEHICLE_SPEED} from "~/config/gauges";
+import {RPM, VEHICLE_SPEED} from "~/config/gauges";
 import {MutableRefObject, useEffect, useRef, useState} from "react";
 import GaugeProps = Gauges.GaugeProps;
-import * as assert from "node:assert";
+import GaugeSelector from "~/components/GaugeSelector/GaugeSelector";
+import GaugeDisplay from "~/components/GaugeDisplay/GaugeDisplay";
 
 export interface onClickProps {
     config: GaugeProps
 
 }
 export default function Route() {
-    let key:number = 0;
     const didMount:MutableRefObject<boolean> = useRef(false)
+    const [desktopOpened, {toggle: toggleDesktop, open: openDesktop, close: closeDesktop}] = useDisclosure();
 
-    const [desktopOpened, {toggle: toggleDesktop}] = useDisclosure();
-    const [selectedGauge, setSelectedGauge] = useState<string | null>(RPM.unit);
-    function click(gaugeName: string){
-        setSelectedGauge(getGauge(gaugeName));
-        console.log("Selected Gauge:" + selectedGauge)
+    const outsideRef = useClickOutside(() => closeDesktop);
+    const [selectedGauge, setSelectedGauge] = useState<string>(RPM.unit);
+    function onGaugeClick(gaugeName: string){
+        setSelectedGauge(gaugeName);
+        openDesktop();
+    }
+    function onSaveClick(){
+        toggleDesktop();
     }
     const [gauges, setGauges] =  useState([
-        Gauge(RPM, click),
-        Gauge(VEHICLE_SPEED, click),
-        // Gauge("Test"),
-        // Gauge("awddawdawd")
+        Gauge(RPM, onGaugeClick),
+        Gauge(VEHICLE_SPEED, onGaugeClick),
     ]);
     useEffect(() => {
         if(!didMount.current) {
             didMount.current = true;
             return;
         }
-        toggleDesktop();
-        console.log("useeffect:" + selectedGauge)
     },[selectedGauge])
     return (
         <AppShell
             aside={{
-                width: { sm: 200, lg: 300},
-                breakpoint:'sm',
+                width: {sm: 200, lg: 300},
+                breakpoint: 'sm',
                 collapsed: {desktop: !desktopOpened}
-        }}
+
+            }}
         >
-            <AppShell.Aside>
-                {selectedGauge}
+            <AppShell.Aside ref={outsideRef}>
+                <GaugeModifer selectedGauge={selectedGauge} setSelectedGauge={setSelectedGauge} onSaveClick={onSaveClick} />
             </AppShell.Aside>
-            <AppShell.Main
-            >
-                <Button
-                    onClick={toggleDesktop}
-                    variant={"outline"}
-                    color="#FFFFFF"
-                >
-                    Toggle
-                </Button>
-                <Grid >
-                    {
-                        gauges.map(gauge => {
-                           key++;
-                           return <Grid.Col span={3} key={key}>{gauge}</Grid.Col>
-                        })
-                    }
-                </Grid>
+            <AppShell.Main>
+                <GaugeDisplay gauges={gauges} onClick={onGaugeClick}/>
             </AppShell.Main>
         </AppShell>
+    );
+}
+
+function GaugeModifer({selectedGauge,setSelectedGauge, onSaveClick}:any) {
+    return (
+        <Stack
+            justify="space-between"
+            align="stretch"
+            gap="xl"
+            h="90vh"
+        >
+            <div>
+                <p>{`Selected Gauge: ${selectedGauge}`}</p>
+                <GaugeSelector value={selectedGauge} setValue={setSelectedGauge}/>
+            </div>
+            <Button
+                onClick={onSaveClick}
+                variant={"outline"}
+                color="#FFFFFF"
+            >
+                Save
+            </Button>
+        </Stack>
     );
 }
