@@ -14,34 +14,35 @@ export interface onClickProps {
 
 }
 export default function Route() {
-    const didMount:MutableRefObject<boolean> = useRef(false)
     const [desktopOpened, {toggle: toggleDesktop, open: openDesktop, close: closeDesktop}] = useDisclosure();
+    const [mobileOpened, {toggle: toggleMobile, open: openMobile, close: closeMobile}] = useDisclosure();
 
     const outsideRef = useClickOutside(() => closeDesktop);
     const [selectedGauge, setSelectedGauge] = useState<string>(RPM.unit);
     function onGaugeClick(gaugeName: string){
         setSelectedGauge(gaugeName);
         openDesktop();
+        openMobile();
     }
     function onSaveClick(){
         toggleDesktop();
+        toggleMobile();
     }
     const [gauges, setGauges] =  useState([
-        Gauge(RPM, onGaugeClick),
-        Gauge(VEHICLE_SPEED, onGaugeClick),
+        Gauge(RPM, onGaugeClick, 0),
+        Gauge(RPM, onGaugeClick, 1),
+        Gauge(RPM, onGaugeClick, 2),
+        Gauge(RPM, onGaugeClick, 3),
+        Gauge(RPM, onGaugeClick, 4),
+        Gauge(VEHICLE_SPEED, onGaugeClick, 5),
+        Gauge(VEHICLE_SPEED, onGaugeClick, 6),
+        Gauge(VEHICLE_SPEED, onGaugeClick, 7),
     ]);
-    useEffect(() => {
-        if(!didMount.current) {
-            didMount.current = true;
-            return;
-        }
-    },[selectedGauge])
     return (
         <AppShell
             aside={{
-                width: {sm: 200, lg: 300},
-                breakpoint: 'sm',
-                collapsed: {desktop: !desktopOpened}
+                width: {sm: 100, lg: 200},
+                collapsed: {desktop: !desktopOpened, mobile: !mobileOpened}
 
             }}
         >
@@ -49,7 +50,7 @@ export default function Route() {
                 <GaugeModifer selectedGauge={selectedGauge} setSelectedGauge={setSelectedGauge} onSaveClick={onSaveClick} />
             </AppShell.Aside>
             <AppShell.Main>
-                <GaugeDisplay gauges={gauges} onClick={onGaugeClick}/>
+                <GaugeDisplay numGauges={8} gauges={gauges} onClick={onGaugeClick}/>
             </AppShell.Main>
         </AppShell>
     );

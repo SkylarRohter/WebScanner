@@ -1,4 +1,9 @@
-.box {
+.boxeight {
+    border: 1px solid white;
+    background-color: var(--mantine-color-body);
+    height: rem(150);
+}
+.boxfour {
     border: 1px solid white;
     background-color: var(--mantine-color-body);
     height: rem(250px);

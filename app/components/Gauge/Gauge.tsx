@@ -1,14 +1,17 @@
 import dynamic from "next/dynamic";
 import {Box, Paper, Stack} from "@mantine/core";
-const GaugeComponent = dynamic(() => import('react-gauge-component'), { ssr: false });
+const GaugeComponent = dynamic(() => import('react-gauge-component'), { ssr: true });
 
 import GaugeProps = Gauges.GaugeProps;
 import classes from "./gauge.module.css";
 
-export default function Gauge(props:GaugeProps,onClick:(gaugeUnit:string)=>void){
+export default function Gauge(props:GaugeProps,onClick:(gaugeUnit:string)=>void, key:number){
     return (
-        <Paper shadow="xs">
-            <Box className={classes.box} onClick={() => {
+        <Paper
+               shadow="xs"
+               key={key}
+        >
+            <Box className={classes.boxeight} onClick={() => {
                 console.log("Gauge:"+props.unit)
                 onClick(props.unit);
             }}>
